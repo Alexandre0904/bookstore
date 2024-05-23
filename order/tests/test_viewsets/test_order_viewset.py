@@ -10,7 +10,7 @@ from order.factories import UserFactory, OrderFactory
 from product.models import Product
 from order.models import Order
 
-class TestOrderViewSet(APITestCase):
+class OrderViewSet(APITestCase):
     
     client = APIClient()
 
