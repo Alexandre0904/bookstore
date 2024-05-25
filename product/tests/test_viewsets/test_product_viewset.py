@@ -36,8 +36,9 @@ class TestProductViewSet(APITestCase):
         category = CategoryFactory()
         data = json.dumps({
             'title': 'notebook',
+            'description': 'notebook desc',
             'price': 800.00,
-            'categories_id': [ category.id ]
+            'categories_id': [category.id]
         })
 
         response = self.client.post(
@@ -52,3 +53,4 @@ class TestProductViewSet(APITestCase):
         
         self.assertEqual(created_product.title, 'notebook')
         self.assertEqual(created_product.price, 800.00)
+        self.assertEqual(created_product.description, 'notebook desc')
