@@ -25,7 +25,7 @@ class TestCategoryViewSet(APITestCase):
         self.assertEqual(category_data[0]['title'], self.category.title)
         
     
-    def test_create_product(self):
+    def test_create_category(self):
         data = json.dumps({
             'title': 'technology',
             })
