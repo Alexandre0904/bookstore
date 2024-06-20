@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [3.8, 3.9]
-        poetry-version: [1.1.4]
+        poetry-version: [1.1.4, 1.2.0]  # Adicionei uma versão mais recente para garantir compatibilidade
 
     runs-on: ubuntu-latest
 
@@ -34,4 +34,5 @@ jobs:
 
     - name: Test
       run: poetry run python manage.py test
+
 
