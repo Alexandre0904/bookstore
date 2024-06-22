@@ -3,8 +3,7 @@ on: [pull_request]
 jobs:
   qa:
     name: Quality check
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-latest  # atualizado para ubuntu-latest para usar a versão mais recente do Ubuntu
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -12,37 +11,30 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/pip
-            ~/.cache/pypoetry
-          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-poetry-
+          python-version: 3.10  # ajuste para a versão específica do Python que você está usando
 
       - name: Install Poetry
         run: |
           pip install -U pip
           pip install poetry
+        env:
+          POETRY_VIRTUALENVS_CREATE: false  # evita que Poetry crie um novo ambiente virtual
 
       - name: Install dependencies
-        run: poetry install
-        env:
-          POETRY_VIRTUALENVS_CREATE: false
+        run: |
+          python -m venv .venv  # criação do ambiente virtual
+          source .venv/bin/activate  # ativação do ambiente virtual
+          poetry install  # instalação das dependências
 
-      - name: Run tests
-        run: poetry run python manage.py test
+      - name: Test
+        run: |
+          source .venv/bin/activate  # ativação do ambiente virtual
+          python manage.py test  # comando para executar os testes do Django
 
-      - name: Wemake Python Styleguide
+      - name: Wemake Python Stylguide
         uses: wemake-services/wemake-python-styleguide@0.16.0
         continue-on-error: true
         with:
           reporter: 'github-pr-review'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    #Atualizando: python 3.9
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
