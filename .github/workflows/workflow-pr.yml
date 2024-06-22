@@ -15,19 +15,19 @@ jobs:
 
       - name: Install Poetry
         run: |
-          pip install -U pip
-          pip install poetry
+          python -m pip install -U pip
+          python -m pip install poetry
           poetry config virtualenvs.create true
           poetry install
 
-      - name: Test
+      - name: Run Tests
         run: |
           poetry run python manage.py test
 
-      - name: Wemake Python Stylguide
+      - name: Wemake Python Styleguide
         uses: wemake-services/wemake-python-styleguide@0.16.0
         continue-on-error: true
         with:
           reporter: 'github-pr-review'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }  
