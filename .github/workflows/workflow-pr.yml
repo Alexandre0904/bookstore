@@ -3,33 +3,26 @@ on: [pull_request]
 jobs:
   qa:
     name: Quality check
-    runs-on: ubuntu-latest  # atualizado para ubuntu-latest para usar a versão mais recente do Ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8  # usar a versão 3.8 do Python
+          python-version: 3.10
 
       - name: Install Poetry
         run: |
           pip install -U pip
           pip install poetry
-        env:
-          POETRY_VIRTUALENVS_CREATE: false  # evita que Poetry crie um novo ambiente virtual
-
-      - name: Install dependencies
-        run: |
-          python -m venv .venv  # criação do ambiente virtual
-          source .venv/bin/activate  # ativação do ambiente virtual
-          poetry install  # instalação das dependências
+          poetry config virtualenvs.create true
+          poetry install
 
       - name: Test
         run: |
-          source .venv/bin/activate  # ativação do ambiente virtual
-          python manage.py test  # comando para executar os testes do Django
+          poetry run python manage.py test
 
       - name: Wemake Python Stylguide
         uses: wemake-services/wemake-python-styleguide@0.16.0
