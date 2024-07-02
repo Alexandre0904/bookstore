@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-i5k!dfiwzj!x3@#*z*%j=#iyr3%_d($jw#)(5%!3aw2%qki8h%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ebac-bookstore-api-2024.heroku.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.whiteNoiseMiddleware",
 ]
 
 # Conditionally add debug_toolbar if not running tests
@@ -77,6 +78,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "bookstore.wsgi.application"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
