@@ -1,0 +1,40 @@
+name: Deploy to PythonAnywhere
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Upload files to PythonAnywhere
+        env:
+          USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+          API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
+        run: |
+          tar -czf myproject.tar.gz *
+          scp myproject.tar.gz ${{ secrets.PYTHONANYWHERE_USERNAME }}@ssh.pythonanywhere.com:~/
+          ssh ${{ secrets.PYTHONANYWHERE_USERNAME }}@ssh.pythonanywhere.com "tar -xzf ~/myproject.tar.gz -C /home/${{ secrets.PYTHONANYWHERE_USERNAME }}/ebac-bookstore-api"
+
+      - name: Reload webapp
+        uses: jensvog/pythonanywhere-webapp-reload-action@v1
+        with:
+          host: 'eu.pythonanywhere.com'
+          username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+          api-token: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
+          domain-name: 'alexandresanches.pythonanywhere.com'
+
+
+
+
