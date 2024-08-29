@@ -18,8 +18,9 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Add PythonAnywhere to known hosts
+      - name: Create SSH directory and add PythonAnywhere to known_hosts
         run: |
+          mkdir -p ~/.ssh
           ssh-keyscan ssh.pythonanywhere.com >> ~/.ssh/known_hosts
 
       - name: Upload files to PythonAnywhere
@@ -38,6 +39,7 @@ jobs:
           username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
           api-token: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
           domain-name: 'alexandresanches.pythonanywhere.com'
+
 
 
 
